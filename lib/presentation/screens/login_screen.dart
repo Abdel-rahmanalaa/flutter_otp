@@ -5,6 +5,7 @@ import 'package:flutter_otp/presentation/widgets/custom_expanded.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
 import 'package:flutter_otp/resources/app_colors.dart';
 import 'package:flutter_otp/resources/app_fonts.dart';
+import 'package:flutter_otp/resources/app_routes.dart';
 import 'package:flutter_otp/resources/app_strings.dart';
 import 'package:flutter_otp/resources/app_values.dart';
 
@@ -37,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: AppSize.s60,
                 ),
-                _bulidNextButton(),
+                _bulidNextButton(context),
               ],
             ),
           ),
@@ -123,13 +124,15 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _bulidNextButton() {
+  Widget _bulidNextButton(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(right: AppPadding.p3),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, RoutesName.otpRoute);
+          },
           style: ElevatedButton.styleFrom(
               minimumSize: const Size(AppSize.s110, AppSize.s50),
               backgroundColor: AppColors.black,
