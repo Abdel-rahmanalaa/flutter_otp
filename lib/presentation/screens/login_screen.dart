@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(vertical: AppMargin.m2),
           child: CustomText(
-            text: AppStrings.plzEnterePhoneToverify,
+            text: AppStrings.plzEnterPhoneToverify,
             textColor: AppColors.black,
             textSize: AppFontSize.s18,
           ),
