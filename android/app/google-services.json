@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "783132415647",
+    "project_id": "flutter-otp-fb877",
+    "storage_bucket": "flutter-otp-fb877.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783132415647:android:5c634744682c21ae2e34aa",
+        "android_client_info": {
+          "package_name": "com.example.flutter_otp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783132415647-vf7o13f9f7b732qcr9iostohbfgurc97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfZ72eUeQX0oF-UDVtTxUckuVZDbTgTaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783132415647-vf7o13f9f7b732qcr9iostohbfgurc97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
