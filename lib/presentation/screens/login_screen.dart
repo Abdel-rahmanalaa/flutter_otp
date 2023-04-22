@@ -10,10 +10,11 @@ import 'package:flutter_otp/resources/app_values.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+
   TextEditingController phoneController = TextEditingController();
   late String phoneNumber;
-
-  LoginScreen({super.key});
+  final GlobalKey<FormState> _phoneFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: Form(
-          key: UniqueKey(),
+          key: _phoneFormKey,
           child: Container(
             margin: const EdgeInsets.symmetric(
                 vertical: AppMargin.m88, horizontal: AppMargin.m32),
