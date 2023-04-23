@@ -7,3 +7,7 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
 }
+
+class AppColorsWithOpacity {
+  static Color whiteOfZero = Colors.white.withOpacity(0);
+}
