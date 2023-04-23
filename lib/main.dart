@@ -1,10 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp/resources/app_routes.dart';
+
+import 'resources/app_routes.dart';
+
+late String initialRoute;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseAuth.instance.authStateChanges().listen((user) => user == null
+      ? initialRoute = RoutesName.loginRoute
+      : initialRoute = RoutesName.verifyRoute);
   runApp(MyApp(
     appRoute: AppRoutes(),
   ));
@@ -24,6 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: appRoute.generatePageRoute,
+      initialRoute: initialRoute,
     );
   }
 }
