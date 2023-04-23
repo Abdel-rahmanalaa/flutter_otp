@@ -1,16 +1,25 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_otp/app/shared_components.dart';
+import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
+import 'package:flutter_otp/presentation/screens/verification_screen.dart';
+import 'package:flutter_otp/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
+import 'package:flutter_otp/presentation/widgets/show_progress_indicator.dart';
 import 'package:flutter_otp/resources/app_colors.dart';
 import 'package:flutter_otp/resources/app_fonts.dart';
 import 'package:flutter_otp/resources/app_strings.dart';
 import 'package:flutter_otp/resources/app_values.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+// ignore: must_be_immutable
 class OtpScreen extends StatelessWidget {
-  OtpScreen({super.key});
+  OtpScreen({super.key, required this.phoneNumber});
 
-  late final phoneNumber;
-  //late String otpCode;
+  final phoneNumber;
+  late String otpCode;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +39,8 @@ class OtpScreen extends StatelessWidget {
               const SizedBox(
                 height: AppSize.s60,
               ),
-              _buildVerifyButton(),
+              _buildVerifyButton(context),
+              _buildPhoneNumberVerificationBloc(),
             ],
           ),
         ),
@@ -81,7 +91,7 @@ class OtpScreen extends StatelessWidget {
         cursorColor: AppColors.black,
         keyboardType: TextInputType.number,
         autoFocus: true,
-        length: AppSize.s10.toInt(),
+        length: AppSize.s6.toInt(),
         obscureText: false,
         animationType: AnimationType.scale,
         pinTheme: PinTheme(
@@ -100,7 +110,7 @@ class OtpScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         enableActiveFill: true,
         onCompleted: (code) {
-          //otpCode = code;
+          otpCode = code;
           print("Completed");
         },
         onChanged: (value) {
@@ -110,19 +120,17 @@ class OtpScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildVerifyButton() {
+  Widget _buildVerifyButton(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(right: AppPadding.p3),
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              minimumSize: const Size(AppSize.s110, AppSize.s50),
-              backgroundColor: AppColors.black,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s6))),
-          child: CustomText(
+        child: CustomElevatedButton(
+          onPressed: () {
+            showProgressIndicator(context);
+            _login(context);
+          },
+          buttonChild: CustomText(
             text: AppStrings.verify,
             textColor: AppColors.white,
             textSize: AppFontSize.s16,
@@ -130,5 +138,37 @@ class OtpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildPhoneNumberVerificationBloc() {
+    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+      listenWhen: (previous, current) => previous != current,
+      listener: (context, state) {
+        if (state is Loading) {
+          showProgressIndicator(context);
+        }
+        if (state is PhoneOTPVerified) {
+          navigatePop(context);
+          navigateAndFinish(context, VerifyScreen());
+        }
+
+        if (state is ErrorOccurred) {
+          //navigatePop(context);
+          String errorMsg = (state).error;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMsg),
+              backgroundColor: AppColors.black,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      },
+      child: Container(),
+    );
+  }
+
+  void _login(BuildContext context) {
+    BlocProvider.of<PhoneAuthCubit>(context).submitOTP(otpCode);
   }
 }
