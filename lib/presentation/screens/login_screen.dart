@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp/app/functions.dart';
+import 'package:flutter_otp/app/shared_components.dart';
+import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
 import 'package:flutter_otp/presentation/widgets/custom_container.dart';
+import 'package:flutter_otp/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter_otp/presentation/widgets/custom_expanded.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
+import 'package:flutter_otp/presentation/widgets/show_progress_indicator.dart';
 import 'package:flutter_otp/resources/app_colors.dart';
 import 'package:flutter_otp/resources/app_fonts.dart';
 import 'package:flutter_otp/resources/app_routes.dart';
@@ -39,6 +44,7 @@ class LoginScreen extends StatelessWidget {
                   height: AppSize.s60,
                 ),
                 _bulidNextButton(context),
+                _buildPhoneNumberSubmitedBloc(),
               ],
             ),
           ),
@@ -129,16 +135,12 @@ class LoginScreen extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(right: AppPadding.p3),
-        child: ElevatedButton(
+        child: CustomElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, RoutesName.otpRoute);
+            showProgressIndicator(context);
+            _register(context);
           },
-          style: ElevatedButton.styleFrom(
-              minimumSize: const Size(AppSize.s110, AppSize.s50),
-              backgroundColor: AppColors.black,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s6))),
-          child: CustomText(
+          buttonChild: CustomText(
             text: AppStrings.next,
             textColor: AppColors.white,
             textSize: AppFontSize.s16,
@@ -146,5 +148,48 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildPhoneNumberSubmitedBloc() {
+    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+      listenWhen: (previous, current) => previous != current,
+      listener: (context, state) {
+        if (state is Loading) {
+          showProgressIndicator(context);
+        }
+        if (state is PhoneNumberSubmited) {
+          navigatePop(context);
+          navigatePushNamed(context, RoutesName.otpRoute, phoneNumber);
+        }
+
+        if (state is ErrorOccurred) {
+          navigatePop(context);
+          String errorMsg = (state).error;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMsg),
+              backgroundColor: AppColors.black,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      },
+      child: Container(),
+    );
+  }
+
+  Future<void> _register(BuildContext context) async {
+    if (!_phoneFormKey.currentState!.validate()) {
+      navigatePop(context);
+      return;
+    } else {
+      _phoneNumberValidated(context);
+    }
+  }
+
+  Future<void> _phoneNumberValidated(BuildContext context) async {
+    navigatePop(context);
+    _phoneFormKey.currentState!.save();
+    BlocProvider.of<PhoneAuthCubit>(context).submitPhoneNumber(phoneNumber);
   }
 }
