@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp/resources/app_values.dart';
 
+// ignore: must_be_immutable
 class CustomContainer extends StatelessWidget {
   double paddingVertical;
   double paddingHorizontal;
