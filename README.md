@@ -1,2 +1,2 @@
 # flutter_otp
-FLutter_otp provides the feature of Phone Authentication to register.An SMS message is sent to the user (using the provided phone number) containing a unique code.
+flutter_otp provides a phone authentication feature for registering by using Firebase. An SMS is sent to the user (using the phone number provided) containing a unique code.
