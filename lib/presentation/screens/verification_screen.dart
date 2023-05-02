@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_otp/app/shared_components.dart';
-import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
+import 'package:flutter_otp/config/locale/app_localizations.dart';
+import 'package:flutter_otp/core/components/shared_components.dart';
+import 'package:flutter_otp/presentation/controller/phone_Auth/cubit/phone_auth_cubit.dart';
 import 'package:flutter_otp/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
-import 'package:flutter_otp/resources/app_colors.dart';
-import 'package:flutter_otp/resources/app_fonts.dart';
-import 'package:flutter_otp/resources/app_routes.dart';
-import 'package:flutter_otp/resources/app_strings.dart';
-import 'package:flutter_otp/resources/app_values.dart';
+import 'package:flutter_otp/core/utils/resources/app_colors.dart';
+import 'package:flutter_otp/core/utils/resources/app_fonts.dart';
+import 'package:flutter_otp/config/routes/app_routes.dart';
+import 'package:flutter_otp/core/utils/resources/app_values.dart';
 
 // ignore: must_be_immutable
 class VerifyScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class VerifyScreen extends StatelessWidget {
       child: Scaffold(
         body: Container(
           margin: const EdgeInsets.symmetric(
-              vertical: AppMargin.m100, horizontal: AppMargin.m20),
+              vertical: AppMargin.m88, horizontal: AppMargin.m20),
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -33,7 +33,7 @@ class VerifyScreen extends StatelessWidget {
               const SizedBox(
                 height: AppSize.s20,
               ),
-              _buildVerificationText(),
+              _buildVerificationText(context),
               const SizedBox(
                 height: AppSize.s250,
               ),
@@ -53,9 +53,10 @@ class VerifyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildVerificationText() {
+  Widget _buildVerificationText(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     return CustomText(
-      text: AppStrings.verificationText,
+      text: appLocalization.translate('verification_text')!,
       textColor: AppColors.black,
       textSize: AppFontSize.s28,
       textWieght: AppFontWight.bold,
@@ -64,6 +65,7 @@ class VerifyScreen extends StatelessWidget {
   }
 
   Widget _buildSignOutButton(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     return BlocProvider<PhoneAuthCubit>(
       create: (context) => phoneAuthCubit,
       child: CustomElevatedButton(
@@ -75,7 +77,7 @@ class VerifyScreen extends StatelessWidget {
         },
         buttonWidth: double.infinity,
         buttonChild: CustomText(
-          text: AppStrings.logOut,
+          text: appLocalization.translate('log_out')!,
           textColor: AppColors.white,
           textSize: AppFontSize.s16,
         ),

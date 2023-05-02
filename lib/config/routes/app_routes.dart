@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
+import 'package:flutter_otp/presentation/controller/phone_Auth/cubit/phone_auth_cubit.dart';
 import 'package:flutter_otp/presentation/screens/login_screen.dart';
 import 'package:flutter_otp/presentation/screens/otp_screen.dart';
 import 'package:flutter_otp/presentation/screens/verification_screen.dart';
@@ -42,6 +42,17 @@ class AppRoutes {
             child: VerifyScreen(),
           ),
         );
+      default:
+        return undefinedRoute();
     }
+  }
+
+  static Route<dynamic> undefinedRoute() {
+    return MaterialPageRoute(
+        builder: ((context) => const Scaffold(
+              body: Center(
+                child: Text('No Route Found'),
+              ),
+            )));
   }
 }

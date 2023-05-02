@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_otp/resources/app_colors.dart';
+import 'package:flutter_otp/core/utils/resources/app_colors.dart';
 
 void showProgressIndicator(BuildContext context) {
   AlertDialog alertDialog = const AlertDialog(

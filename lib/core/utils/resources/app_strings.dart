@@ -10,4 +10,8 @@ class AppStrings {
   static const String logOut = 'LogOut';
   static const String verificationText =
       'You\'re almost done to get started. let\'s do it...';
+  static const String englishCode = 'en';
+  static const String arabicCode = 'ar';
+  static const String locale = 'locale';
+  static const String cacheFailure = 'Cache Failure';
 }

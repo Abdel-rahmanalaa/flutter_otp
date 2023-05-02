@@ -2,16 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_otp/app/shared_components.dart';
-import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
+import 'package:flutter_otp/config/locale/app_localizations.dart';
+import 'package:flutter_otp/core/components/shared_components.dart';
+import 'package:flutter_otp/presentation/controller/phone_Auth/cubit/phone_auth_cubit.dart';
 import 'package:flutter_otp/presentation/screens/verification_screen.dart';
 import 'package:flutter_otp/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
 import 'package:flutter_otp/presentation/widgets/show_progress_indicator.dart';
-import 'package:flutter_otp/resources/app_colors.dart';
-import 'package:flutter_otp/resources/app_fonts.dart';
-import 'package:flutter_otp/resources/app_strings.dart';
-import 'package:flutter_otp/resources/app_values.dart';
+import 'package:flutter_otp/core/utils/resources/app_colors.dart';
+import 'package:flutter_otp/core/utils/resources/app_fonts.dart';
+import 'package:flutter_otp/core/utils/resources/app_strings.dart';
+import 'package:flutter_otp/core/utils/resources/app_values.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 // ignore: must_be_immutable
@@ -31,7 +32,7 @@ class OtpScreen extends StatelessWidget {
               vertical: AppMargin.m88, horizontal: AppMargin.m32),
           child: Column(
             children: [
-              _buildIntroText(),
+              _buildIntroText(context),
               const SizedBox(
                 height: AppSize.s88,
               ),
@@ -48,12 +49,13 @@ class OtpScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildIntroText() {
+  Widget _buildIntroText(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: AppStrings.verifyNumber,
+          text: appLocalization.translate('verify_number')!,
           textColor: AppColors.black,
           textSize: AppFontSize.s24,
           textWieght: AppFontWight.bold,
@@ -65,7 +67,7 @@ class OtpScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: AppMargin.m2),
           child: RichText(
             text: TextSpan(
-              text: AppStrings.enterCode,
+              text: appLocalization.translate('enter_code')!,
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: AppFontSize.s18,
@@ -121,6 +123,7 @@ class OtpScreen extends StatelessWidget {
   }
 
   Widget _buildVerifyButton(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -131,7 +134,7 @@ class OtpScreen extends StatelessWidget {
             _login(context);
           },
           buttonChild: CustomText(
-            text: AppStrings.verify,
+            text: appLocalization.translate('verify')!,
             textColor: AppColors.white,
             textSize: AppFontSize.s16,
           ),

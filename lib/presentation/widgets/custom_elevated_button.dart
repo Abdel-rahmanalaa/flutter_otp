@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_otp/resources/app_colors.dart';
-import 'package:flutter_otp/resources/app_values.dart';
+import 'package:flutter_otp/core/utils/resources/app_colors.dart';
+import 'package:flutter_otp/core/utils/resources/app_values.dart';
 
 // ignore: must_be_immutable
 class CustomElevatedButton extends StatelessWidget {

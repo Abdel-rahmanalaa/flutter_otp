@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_otp/app/functions.dart';
-import 'package:flutter_otp/app/shared_components.dart';
-import 'package:flutter_otp/controller/cubit/phone_Auth/cubit/phone_auth_cubit.dart';
+import 'package:flutter_otp/config/locale/app_localizations.dart';
+import 'package:flutter_otp/core/components/shared_components.dart';
+import 'package:flutter_otp/core/functions/functions.dart';
+import 'package:flutter_otp/presentation/controller/locale/cubit/locale_cubit.dart';
+import 'package:flutter_otp/presentation/controller/phone_Auth/cubit/phone_auth_cubit.dart';
 import 'package:flutter_otp/presentation/widgets/custom_container.dart';
 import 'package:flutter_otp/presentation/widgets/custom_elevated_button.dart';
 import 'package:flutter_otp/presentation/widgets/custom_expanded.dart';
 import 'package:flutter_otp/presentation/widgets/custom_text.dart';
 import 'package:flutter_otp/presentation/widgets/show_progress_indicator.dart';
-import 'package:flutter_otp/resources/app_colors.dart';
-import 'package:flutter_otp/resources/app_fonts.dart';
-import 'package:flutter_otp/resources/app_routes.dart';
-import 'package:flutter_otp/resources/app_strings.dart';
-import 'package:flutter_otp/resources/app_values.dart';
+import 'package:flutter_otp/core/utils/resources/app_colors.dart';
+import 'package:flutter_otp/core/utils/resources/app_fonts.dart';
+import 'package:flutter_otp/config/routes/app_routes.dart';
+import 'package:flutter_otp/core/utils/resources/app_strings.dart';
+import 'package:flutter_otp/core/utils/resources/app_values.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
@@ -26,6 +28,22 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.black,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.translate_outlined,
+              color: AppColors.white,
+            ),
+            onPressed: () {
+              if (AppLocalizations.of(context)!.isEnLocale) {
+                BlocProvider.of<LocaleCubit>(context).toArabic();
+              } else {
+                BlocProvider.of<LocaleCubit>(context).toEnglish();
+              }
+            },
+          ),
+        ),
         backgroundColor: AppColors.white,
         body: Form(
           key: _phoneFormKey,
@@ -35,7 +53,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildIntroText(),
+                _buildIntroText(context),
                 const SizedBox(
                   height: AppSize.s120,
                 ),
@@ -53,12 +71,14 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildIntroText() {
+  Widget _buildIntroText(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: AppStrings.askAboutNumber,
+          text: appLocalization.translate('ask_about_number')!,
           textColor: AppColors.black,
           textSize: AppFontSize.s24,
           textWieght: AppFontWight.bold,
@@ -69,7 +89,7 @@ class LoginScreen extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(vertical: AppMargin.m2),
           child: CustomText(
-            text: AppStrings.plzEnterPhoneToverify,
+            text: appLocalization.translate('plz_enter_phone_to_verify')!,
             textColor: AppColors.black,
             textSize: AppFontSize.s18,
           ),
@@ -131,6 +151,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _bulidNextButton(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -141,7 +162,7 @@ class LoginScreen extends StatelessWidget {
             _register(context);
           },
           buttonChild: CustomText(
-            text: AppStrings.next,
+            text: appLocalization.translate('next')!,
             textColor: AppColors.white,
             textSize: AppFontSize.s16,
           ),
